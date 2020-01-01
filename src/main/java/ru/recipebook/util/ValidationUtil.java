@@ -1,6 +1,7 @@
 package ru.recipebook.util;
 
 import org.slf4j.Logger;
+import ru.recipebook.HasId;
 import ru.recipebook.model.AbstractIdEntity;
 import ru.recipebook.util.exception.ErrorType;
 import ru.recipebook.util.exception.IllegalRequestDataException;
@@ -38,7 +39,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void assureIdConsistent(AbstractIdEntity bean, int id) {
+    public static void assureIdConsistent(HasId bean, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (bean.isNew()) {
             bean.setId(id);

@@ -1,13 +1,14 @@
 package ru.recipebook.to;
 
 import org.hibernate.validator.constraints.SafeHtml;
+import ru.recipebook.HasEmail;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-public class UserTo extends BaseTo implements Serializable {
+public class UserTo extends BaseTo implements HasEmail,Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotBlank
@@ -18,7 +19,6 @@ public class UserTo extends BaseTo implements Serializable {
     @Email
     @NotBlank
     @Size(max = 100)
-    @SafeHtml // https://stackoverflow.com/questions/17480809
     private String email;
 
     @NotBlank

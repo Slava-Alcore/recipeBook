@@ -1,8 +1,8 @@
 package ru.recipebook.to;
 
-import ru.recipebook.model.AbstractIdEntity;
+import ru.recipebook.HasId;
 
-public abstract class BaseTo extends AbstractIdEntity {
+public abstract class BaseTo implements HasId {
     protected Integer id;
 
     public BaseTo() {

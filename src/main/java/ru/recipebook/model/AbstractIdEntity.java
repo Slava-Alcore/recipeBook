@@ -3,12 +3,13 @@ package ru.recipebook.model;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
+import ru.recipebook.HasId;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractIdEntity implements Persistable<Integer> {
+public abstract class AbstractIdEntity implements HasId {
     public static final int USER_SEQ = 100000;
     public static final int RECIPE_SEQ = 100;
     public static final int PRODUCT_SEQ = 1000;
