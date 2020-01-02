@@ -29,6 +29,12 @@ public abstract class AbstractRecipeController {
         return service.get(id, userId);
     }
 
+    public Recipe getWithProducts(int id) {
+        int userId = SecurityUtil.authUserId();
+        log.info("get recipe {} for user {}", id, userId);
+        return service.getWithProducts(id, userId);
+    }
+
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
         log.info("delete recipe {} for user {}", id, userId);

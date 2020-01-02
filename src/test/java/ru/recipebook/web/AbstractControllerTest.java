@@ -91,6 +91,10 @@ abstract public class AbstractControllerTest {
         return doGet("{id}", id);
     }
 
+    protected RequestWrapper doGetWithProducts(int id) {
+        return doGet("withprod/{id}", id);
+    }
+
     protected RequestWrapper doDelete() {
         return wrap(MockMvcRequestBuilders.delete(url));
     }

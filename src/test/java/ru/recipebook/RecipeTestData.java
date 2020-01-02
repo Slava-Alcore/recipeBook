@@ -28,7 +28,7 @@ public class RecipeTestData {
     public static final List<Recipe> RECIPES = List.of(RECIPE2, RECIPE1);
 
     public static Recipe getNew() {
-        Recipe recipe = new Recipe(null, of(2019, Month.APRIL, 1, 18, 0), "Ужин", 3);
+        Recipe recipe = new Recipe(null, of(2019, Month.APRIL, 1, 18, 0), "Большой Ужин", 3);
         recipe.setProductList(NEW_PRODUCTS);
         return recipe;
     }

@@ -1,5 +1,6 @@
 package ru.recipebook.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -16,18 +17,19 @@ public class Product extends AbstractNamedEntity {
 
     @Column(name = "volume", nullable = false)
     @NotNull
-    @Range(min = 10,max = 10000)
+    @Range(max = 10000)
     private Double volume;
 
     @Column(name = "volumeMeasure", nullable = false)
     @NotBlank
-    @Size(min = 2, max = 20)
+    @Size(min = 1, max = 20)
     private String volumeMeasure;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
+    @JsonBackReference
     private Recipe recipe;
 
     public Product() {

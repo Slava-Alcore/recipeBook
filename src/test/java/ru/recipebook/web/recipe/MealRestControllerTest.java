@@ -5,11 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import ru.recipebook.ProductTestData;
 import ru.recipebook.RecipeTestData;
+import ru.recipebook.model.Product;
 import ru.recipebook.model.Recipe;
 import ru.recipebook.service.RecipeService;
 import ru.recipebook.util.exception.NotFoundException;
 import ru.recipebook.web.AbstractControllerTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -23,6 +28,7 @@ import static ru.recipebook.model.AbstractIdEntity.RECIPE_SEQ;
 import static ru.recipebook.util.RecipeUtil.createTo;
 import static ru.recipebook.util.RecipeUtil.getTos;
 import static ru.recipebook.util.exception.ErrorType.VALIDATION_ERROR;
+import static ru.recipebook.ProductTestData.*;
 
 class MealRestControllerTest extends AbstractControllerTest {
 
@@ -75,19 +81,19 @@ class MealRestControllerTest extends AbstractControllerTest {
         perform(doPut(RECIPE1_ID).jsonBody(updated).basicAuth(USER))
                 .andExpect(status().isNoContent());
 
-        RECIPE_MATCHERS.assertMatch(recipeService.get(RECIPE1_ID, RECIPE_SEQ), updated);
+        RECIPE_MATCHERS.assertMatch(recipeService.get(RECIPE1_ID, USER_ID), updated);
     }
 
     @Test
     void createWithLocation() throws Exception {
-        Recipe newMeal = RecipeTestData.getNew();
-        ResultActions action = perform(doPost().jsonBody(newMeal).basicAuth(USER));
+        Recipe newRecipe = RecipeTestData.getNew();
+        ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
 
         Recipe created = readFromJson(action, Recipe.class);
         Integer newId = created.getId();
-        newMeal.setId(newId);
-        RECIPE_MATCHERS.assertMatch(created, newMeal);
-        RECIPE_MATCHERS.assertMatch(recipeService.get(newId, USER_ID), newMeal);
+        newRecipe.setId(newId);
+        RECIPE_MATCHERS.assertMatch(created, newRecipe);
+        RECIPE_MATCHERS.assertMatch(recipeService.get(newId, USER_ID), newRecipe);
     }
 
     @Test
@@ -134,5 +140,39 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR))
                 .andDo(print());
+    }
+
+    @Test
+    void getWithProducts() throws Exception {
+        perform(doGetWithProducts(RECIPE1_ID).basicAuth(USER))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> PRODUCT_MATCHERS.assertMatch(readFromJsonMvcResult(result, Recipe.class).getProductList(), PRODUCT1,PRODUCT3,PRODUCT2));
+    }
+
+    @Test
+    void createWithProducts() throws Exception {
+        Recipe newRecipe = RecipeTestData.getNew();
+        newRecipe.setProductList(NEW_PRODUCTS);
+        ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
+
+        Recipe created = readFromJson(action, Recipe.class);
+        Integer newId = created.getId();
+        newRecipe.setId(newId);
+        RECIPE_MATCHERS.assertMatch(recipeService.get(newId, USER_ID), newRecipe);
+        List<Product> products = new ArrayList<>(recipeService.get(newId, USER_ID).getProductList());
+        PRODUCT_MATCHERS.assertMatch(products, newRecipe.getProductList());
+    }
+
+    @Test
+    void updateWithProducts() throws Exception {
+        Recipe updated = RecipeTestData.getUpdated();
+        updated.setProductList(NEW_PRODUCTS);
+        perform(doPut(RECIPE1_ID).jsonBody(updated).basicAuth(USER))
+                .andExpect(status().isNoContent());
+        RECIPE_MATCHERS.assertMatch(recipeService.get(RECIPE1_ID, USER_ID), updated);
+        List<Product> products = new ArrayList<>(recipeService.get(RECIPE1_ID, USER_ID).getProductList());
+        PRODUCT_MATCHERS.assertMatch(products, updated.getProductList());
     }
 }

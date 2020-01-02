@@ -28,6 +28,12 @@ public class RecipeRestController extends AbstractRecipeController {
     }
 
     @Override
+    @GetMapping("/withprod/{id}")
+    public Recipe getWithProducts(@PathVariable int id) {
+        return super.getWithProducts(id);
+    }
+
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {

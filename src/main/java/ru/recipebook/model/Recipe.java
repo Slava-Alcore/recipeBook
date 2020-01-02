@@ -1,6 +1,7 @@
 package ru.recipebook.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -39,6 +40,7 @@ public class Recipe extends AbstractIdEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade=CascadeType.MERGE)
     @OrderBy("name")
     @NotEmpty
+    @JsonManagedReference
     private List<Product> productList;
 
     @ManyToOne(fetch = FetchType.LAZY)
