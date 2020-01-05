@@ -49,7 +49,7 @@ public class User extends AbstractNamedEntity implements HasEmail {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("dateTime DESC")
+    @OrderBy("date DESC")
     @JsonManagedReference
     protected List<Recipe> recipes;
 

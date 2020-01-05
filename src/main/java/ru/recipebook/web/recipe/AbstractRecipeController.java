@@ -12,6 +12,7 @@ import ru.recipebook.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import static ru.recipebook.util.ValidationUtil.assureIdConsistent;
@@ -61,12 +62,11 @@ public abstract class AbstractRecipeController {
         service.update(recipe, userId);
     }
 
-    public List<RecipeTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
-                                   @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+    public List<RecipeTo> getBetween(@Nullable Date startDate,@Nullable Date endDate) {
         int userId = SecurityUtil.authUserId();
-        log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
+        log.info("getBetween dates({} - {}) for user {}", startDate, endDate, userId);
 
         List<Recipe> mealsDateFiltered = service.getBetweenDates(startDate, endDate, userId);
-        return RecipeUtil.getFilteredTos(mealsDateFiltered, startTime, endTime);
+        return RecipeUtil.getFilteredTos(mealsDateFiltered, startDate, endDate);
     }
 }

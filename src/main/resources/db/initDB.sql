@@ -33,7 +33,7 @@ CREATE TABLE user_roles
 CREATE TABLE recipes (
   id          INTEGER PRIMARY KEY DEFAULT nextval('recipe_seq'),
   user_id     INTEGER   NOT NULL,
-  date_time   TIMESTAMP NOT NULL,
+  date   TIMESTAMP DEFAULT now() NOT NULL,
   description TEXT      NOT NULL,
   servings    INT       NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE

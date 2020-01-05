@@ -31,11 +31,11 @@ class RootControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getMeals() throws Exception {
-        perform(doGet("meals").auth(USER))
+    void getRecipes() throws Exception {
+        perform(doGet("recipes").auth(USER))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("meals"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"));
+                .andExpect(view().name("recipes"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/recipes.jsp"));
     }
 }

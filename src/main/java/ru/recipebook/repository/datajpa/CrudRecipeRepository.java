@@ -10,6 +10,7 @@ import ru.recipebook.model.Product;
 import ru.recipebook.model.Recipe;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -23,11 +24,11 @@ public interface CrudRecipeRepository extends JpaRepository<Recipe, Integer> {
     @Transactional
     Recipe save(Recipe item);
 
-    @Query("SELECT r FROM Recipe r WHERE r.user.id=:userId ORDER BY r.dateTime DESC")
+    @Query("SELECT r FROM Recipe r WHERE r.user.id=:userId ORDER BY r.date DESC")
     List<Recipe> getAll(@Param("userId") int userId);
 
-    @Query("SELECT r from Recipe r WHERE r.user.id=:userId AND r.dateTime >= :startDate AND r.dateTime < :endDate ORDER BY r.dateTime DESC")
-    List<Recipe> getBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("userId") int userId);
+    @Query("SELECT r from Recipe r WHERE r.user.id=:userId AND r.date >= :startDate AND r.date <= :endDate ORDER BY r.date DESC")
+    List<Recipe> getBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("userId") int userId);
 
     @EntityGraph(attributePaths = {"productList"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Recipe r WHERE r.id=?1 and r.user.id = ?2")

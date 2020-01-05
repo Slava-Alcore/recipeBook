@@ -2,6 +2,7 @@ package ru.recipebook.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -17,15 +18,16 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "recipes")
 public class Recipe extends AbstractIdEntity {
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
-    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
-    private LocalDateTime dateTime;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date date;
 
     @Column(name = "description", nullable = false)
     @NotBlank
@@ -53,39 +55,49 @@ public class Recipe extends AbstractIdEntity {
     public Recipe() {
     }
 
-    public Recipe(LocalDateTime dateTime, String description, Integer servings) {
-        this(null,dateTime,description,servings);
+    public Recipe(Recipe recipe) {
+        this(recipe.id,recipe.description,recipe.servings,recipe.productList);
     }
 
-    public Recipe(Integer id, LocalDateTime dateTime, String description, Integer servings) {
+    /*public Recipe(String description, Integer servings) {
+        this(null,description,servings);
+    }*/
+
+    public Recipe(String description, Integer servings,List<Product> productList) {
+        this(null,description,servings,productList);
+    }
+
+
+    /*public Recipe(Integer id, String description, Integer servings) {
         super(id);
-        this.dateTime = dateTime;
+        this.description = description;
+        this.servings = servings;
+    }*/
+
+    /*public Recipe(Integer id, LocalDateTime dateTime, String description, Integer servings) {
+        super(id);
+        this.dateTime=dateTime;
         this.description = description;
         this.servings = servings;
     }
 
     public Recipe(Integer id, LocalDateTime dateTime, String description, Integer servings,List<Product> products) {
         super(id);
-        this.dateTime = dateTime;
+        this.dateTime=dateTime;
+        this.description = description;
+        this.servings = servings;
+        this.setProductList(products);
+    }*/
+
+    public Recipe(Integer id, String description, Integer servings,List<Product> products) {
+        super(id);
         this.description = description;
         this.servings = servings;
         this.setProductList(products);
     }
 
-    public LocalDate getDate() {
-        return dateTime.toLocalDate();
-    }
-
-    public LocalTime getTime() {
-        return dateTime.toLocalTime();
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public Date getDate() {
+        return date;
     }
 
     public String getDescription() {
@@ -118,5 +130,19 @@ public class Recipe extends AbstractIdEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", description=" + description +
+                ", servings=" + servings +
+                ", productList=" + productList +
+                '}';
     }
 }

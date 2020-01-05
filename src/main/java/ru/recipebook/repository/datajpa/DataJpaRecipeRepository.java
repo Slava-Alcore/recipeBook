@@ -8,6 +8,8 @@ import ru.recipebook.repository.RecipeRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import static ru.recipebook.util.DateTimeUtil.*;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -45,8 +47,8 @@ public class DataJpaRecipeRepository implements RecipeRepository {
     }
 
     @Override
-    public List<Recipe> getBetweenInclusive(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return crudRecipeRepository.getBetween(startDateTime,endDateTime,userId);
+    public List<Recipe> getBetweenInclusive(Date startDate, Date endDate, int userId) {
+        return crudRecipeRepository.getBetween(getStartInclusive(startDate),getEndExclusive(endDate),userId);
     }
 
     @Override

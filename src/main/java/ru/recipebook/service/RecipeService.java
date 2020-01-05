@@ -8,6 +8,7 @@ import ru.recipebook.model.Recipe;
 import ru.recipebook.repository.RecipeRepository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static ru.recipebook.util.ValidationUtil.checkNotFoundWithId;
@@ -30,7 +31,7 @@ public class RecipeService {
         checkNotFoundWithId(recipeRepository.delete(id, userId), id);
     }
 
-    public List<Recipe> getBetweenDates(@Nullable LocalDate startDate, @Nullable LocalDate endDate, int userId) {
+    public List<Recipe> getBetweenDates(@Nullable Date startDate, @Nullable Date endDate, int userId) {
         return recipeRepository.getBetweenInclusive(startDate, endDate, userId);
     }
 
@@ -39,7 +40,7 @@ public class RecipeService {
     }
 
     public void update(Recipe recipe, int userId) {
-        Assert.notNull(recipe, "meal must not be null");
+        Assert.notNull(recipe, "recipe must not be null");
         checkNotFoundWithId(recipeRepository.save(recipe, userId), recipe.getId());
     }
 

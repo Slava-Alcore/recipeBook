@@ -13,7 +13,10 @@ import ru.recipebook.service.RecipeService;
 import ru.recipebook.util.exception.NotFoundException;
 import ru.recipebook.web.AbstractControllerTest;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,12 +33,12 @@ import static ru.recipebook.util.RecipeUtil.getTos;
 import static ru.recipebook.util.exception.ErrorType.VALIDATION_ERROR;
 import static ru.recipebook.ProductTestData.*;
 
-class MealRestControllerTest extends AbstractControllerTest {
+class RecipeRestControllerTest extends AbstractControllerTest {
 
     @Autowired
     private RecipeService recipeService;
 
-    MealRestControllerTest() {
+    RecipeRestControllerTest() {
         super(RecipeRestController.REST_URL);
     }
 
@@ -78,6 +81,7 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Recipe updated = RecipeTestData.getUpdated();
+        updated.setProductList(List.of(PRODUCT1,PRODUCT2,PRODUCT3));
         perform(doPut(RECIPE1_ID).jsonBody(updated).basicAuth(USER))
                 .andExpect(status().isNoContent());
 
@@ -112,7 +116,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .param("endDate", "2019-03-30").param("endTime", "14:00"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(RECIPE_TO_MATCHERS.contentJson(createTo(RECIPE2)));
+                .andExpect(RECIPE_TO_MATCHERS.contentJson(getTos(Collections.singletonList(RECIPE2))));
     }
 
     @Test
@@ -124,7 +128,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createInvalid() throws Exception {
-        Recipe invalid = new Recipe(null, null, "Dummy", 200);
+        Recipe invalid = new Recipe(null, "Dummy", 200,null);
         perform(doPost().jsonBody(invalid).basicAuth(ADMIN))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
@@ -134,7 +138,7 @@ class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Recipe invalid = new Recipe(RECIPE1_ID, null, null, 20);
+        Recipe invalid = new Recipe(RECIPE1_ID, null, 20, List.of(PRODUCT1,PRODUCT2,PRODUCT3));
         perform(doPut(RECIPE1_ID).jsonBody(invalid).basicAuth(USER))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
@@ -156,7 +160,7 @@ class MealRestControllerTest extends AbstractControllerTest {
         Recipe newRecipe = RecipeTestData.getNew();
         newRecipe.setProductList(NEW_PRODUCTS);
         ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
-
+        action.andDo(print());
         Recipe created = readFromJson(action, Recipe.class);
         Integer newId = created.getId();
         newRecipe.setId(newId);

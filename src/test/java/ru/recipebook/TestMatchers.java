@@ -2,6 +2,8 @@ package ru.recipebook;
 
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +37,7 @@ public class TestMatchers<T> {
     }
 
     public void assertMatch(Iterable<T> actual, T... expected) {
-        assertMatch(actual, List.of(expected));
+        assertMatch(actual, new ArrayList<T>(Arrays.asList(expected)));
     }
 
     public void assertMatch(Iterable<T> actual, Iterable<T> expected) {

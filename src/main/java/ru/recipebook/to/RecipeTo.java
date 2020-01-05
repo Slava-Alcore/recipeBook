@@ -2,26 +2,26 @@ package ru.recipebook.to;
 
 import ru.recipebook.model.Product;
 
+import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class RecipeTo extends BaseTo {
-    private LocalDateTime dateTime;
+    private Date date;
 
     private String description;
 
     private Integer servings;
 
-    private List<Product> productList;
-
-    public RecipeTo(Integer id, LocalDateTime dateTime, String description, Integer servings, List<Product> productList) {
+    @ConstructorProperties({"id", "dateTime", "description", "servings"})
+    public RecipeTo(Integer id, Date date, String description, Integer servings) {
         super(id);
-        this.dateTime = dateTime;
+        this.date = date;
         this.description = description;
         this.servings = servings;
-        this.productList = productList;
     }
 
     @Override
@@ -30,25 +30,23 @@ public class RecipeTo extends BaseTo {
         if (o == null || getClass() != o.getClass()) return false;
         RecipeTo that = (RecipeTo) o;
         return servings == that.servings &&
-                productList.equals(that.productList) &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(dateTime, that.dateTime) &&
+                Objects.equals(date, that.date) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateTime, description, servings, productList);
+        return Objects.hash(id, date, description, servings);
     }
 
     @Override
     public String toString() {
         return "MealTo{" +
                 "id=" + id +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + date +
                 ", description='" + description + '\'' +
                 ", calories=" + servings +
-                ", excess=" + productList +
                 '}';
     }
 }

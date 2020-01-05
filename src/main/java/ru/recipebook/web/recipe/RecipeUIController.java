@@ -11,6 +11,7 @@ import ru.recipebook.to.RecipeTo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -49,10 +50,8 @@ public class RecipeUIController extends AbstractRecipeController {
     @Override
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecipeTo> getBetween(
-            @RequestParam @Nullable LocalDate startDate,
-            @RequestParam @Nullable LocalTime startTime,
-            @RequestParam @Nullable LocalDate endDate,
-            @RequestParam @Nullable LocalTime endTime) {
-        return super.getBetween(startDate, startTime, endDate, endTime);
+            @RequestParam @Nullable Date startDate,
+            @RequestParam @Nullable Date endDate) {
+        return super.getBetween(startDate, endDate);
     }
 }

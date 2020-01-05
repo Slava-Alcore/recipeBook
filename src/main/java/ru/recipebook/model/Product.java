@@ -4,16 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
+import ru.recipebook.HasId;
+import ru.recipebook.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.ConstructorProperties;
 
 @Entity
 @Table(name = "products")
-public class Product extends AbstractNamedEntity {
-    private static final long serialVersionUID = 1L;
+public class Product extends AbstractNamedEntity implements HasId {
 
     @Column(name = "volume", nullable = false)
     @NotNull
@@ -28,7 +30,7 @@ public class Product extends AbstractNamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull
+    @NotNull(groups = View.Persist.class)
     @JsonBackReference
     private Recipe recipe;
 
@@ -67,5 +69,15 @@ public class Product extends AbstractNamedEntity {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name=" + name +
+                ", volume=" + volume +
+                ", volumeMeasure=" + volumeMeasure +
+                '}';
     }
 }

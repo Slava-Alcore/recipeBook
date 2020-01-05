@@ -9,7 +9,7 @@ public class RootController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:meals";
+        return "redirect:recipes";
     }
 
 //    @Secured("ROLE_ADMIN")
@@ -24,8 +24,8 @@ public class RootController {
         return "login";
     }
 
-    @GetMapping("/meals")
+    @GetMapping("/recipes")
     public String getMeals() {
-        return "meals";
+        return "recipes";
     }
 }
