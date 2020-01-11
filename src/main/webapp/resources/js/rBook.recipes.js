@@ -19,7 +19,7 @@ $.ajaxSetup({
         "text json": function (stringData) {
             var json = JSON.parse(stringData);
             $(json).each(function () {
-                this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
+                this.date = this.date.replace('T', ' ').substr(0, 10);
             });
             return json;
         }
@@ -32,13 +32,18 @@ $(function () {
         datatableOpts: {
             "columns": [
                 {
-                    "data": "dateTime"
+                    "data": "date"
                 },
                 {
                     "data": "description"
                 },
                 {
                     "data": "servings"
+                },
+                {
+                    "render": renderViewBtn,
+                    "defaultContent": "",
+                    "orderable": false
                 },
                 {
                     "render": renderEditBtn,
@@ -87,28 +92,7 @@ $(function () {
         }
     });
 
-    var startTime = $('#startTime');
-    var endTime = $('#endTime');
-    startTime.datetimepicker({
-        datepicker: false,
-        format: 'H:i',
-        onShow: function (ct) {
-            this.setOptions({
-                maxTime: endTime.val() ? endTime.val() : false
-            })
-        }
-    });
-    endTime.datetimepicker({
-        datepicker: false,
-        format: 'H:i',
-        onShow: function (ct) {
-            this.setOptions({
-                minTime: startTime.val() ? startTime.val() : false
-            })
-        }
-    });
-
-    $('#dateTime').datetimepicker({
-        format: 'Y-m-d H:i'
-    });
+    /*$('#date').datetimepicker({
+        format: 'Y-m-d'
+    });*/
 });

@@ -9,20 +9,17 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateTimeUtil {
-    public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm";
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
-    private static final Date MIN_DATE = Date.from(Instant.MIN);
-    private static final Date MAX_DATE = Date.from(Instant.MAX);
+    private static final Date MIN_DATE = new GregorianCalendar(1, Calendar.FEBRUARY,1).getTime();
+    private static final Date MAX_DATE = new GregorianCalendar(4000,Calendar.DECEMBER,31).getTime();
 
     private DateTimeUtil() {
-    }
-
-    public static String toString(LocalDateTime ldt) {
-        return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
 
     public static @Nullable

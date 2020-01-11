@@ -1,5 +1,6 @@
 package ru.recipebook.web.recipe;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.recipebook.View;
 import ru.recipebook.model.Recipe;
 import ru.recipebook.to.RecipeTo;
+import ru.recipebook.util.DateTimeUtil;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -68,8 +70,8 @@ public class RecipeRestController extends AbstractRecipeController {
     @Override
     @GetMapping(value = "/filter")
     public List<RecipeTo> getBetween(
-            @RequestParam @Nullable Date startDate,
-            @RequestParam @Nullable Date endDate) {
+            @RequestParam @Nullable @DateTimeFormat(pattern = DateTimeUtil.DATE_PATTERN) Date startDate,
+            @RequestParam @Nullable @DateTimeFormat(pattern = DateTimeUtil.DATE_PATTERN) Date endDate) {
         return super.getBetween(startDate, endDate);
     }
 }

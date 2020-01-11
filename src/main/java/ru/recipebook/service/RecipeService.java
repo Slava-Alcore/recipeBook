@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import static ru.recipebook.util.DateTimeUtil.*;
 import static ru.recipebook.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -32,7 +33,7 @@ public class RecipeService {
     }
 
     public List<Recipe> getBetweenDates(@Nullable Date startDate, @Nullable Date endDate, int userId) {
-        return recipeRepository.getBetweenInclusive(startDate, endDate, userId);
+        return recipeRepository.getBetweenInclusive(getStartInclusive(startDate), getEndExclusive(endDate), userId);
     }
 
     public List<Recipe> getAll(int userId) {

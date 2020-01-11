@@ -8,9 +8,4 @@
     <short-name>functions</short-name>
     <uri>http://topjava.javawebinar.ru/functions</uri>
 
-    <function>
-        <name>formatDateTime</name>
-        <function-class>ru.recipebook.util.DateTimeUtil</function-class>
-        <function-signature>java.lang.String toString(java.time.LocalDateTime)</function-signature>
-    </function>
 </taglib>

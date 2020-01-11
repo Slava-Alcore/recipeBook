@@ -135,8 +135,6 @@ class DataJpaRecipeServiceTest extends AbstractServiceTest {
         Recipe r1 = new Recipe(null, "  ", 4, USER_PRODUCTS);
         r1.setDate(new Date(2019, Calendar.APRIL, 1));
         validateRootCause(() -> service.create(r1, USER_ID), ConstraintViolationException.class);
-        Recipe r2 = new Recipe(null, "Description", 5, USER_PRODUCTS);
-        validateRootCause(() -> service.create(r2, USER_ID), ConstraintViolationException.class);
         Recipe r3 = new Recipe(null,"Description", 300, USER_PRODUCTS);
         r3.setDate(new Date(2019, Calendar.APRIL, 1));
         validateRootCause(() -> service.create(r3, USER_ID), ConstraintViolationException.class);

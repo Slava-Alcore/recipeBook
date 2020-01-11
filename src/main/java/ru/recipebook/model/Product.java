@@ -15,7 +15,7 @@ import java.beans.ConstructorProperties;
 
 @Entity
 @Table(name = "products")
-public class Product extends AbstractNamedEntity implements HasId {
+public class Product extends AbstractNamedEntity {
 
     @Column(name = "volume", nullable = false)
     @NotNull
@@ -73,7 +73,7 @@ public class Product extends AbstractNamedEntity implements HasId {
 
     @Override
     public String toString() {
-        return "Recipe{" +
+        return "Product{" +
                 "id=" + id +
                 ", name=" + name +
                 ", volume=" + volume +

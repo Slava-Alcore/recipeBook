@@ -1,5 +1,6 @@
 package ru.recipebook.web.recipe;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.recipebook.View;
 import ru.recipebook.model.Recipe;
 import ru.recipebook.to.RecipeTo;
+import ru.recipebook.util.DateTimeUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,6 +33,13 @@ public class RecipeUIController extends AbstractRecipeController {
     }
 
     @Override
+    @GetMapping("/withprod/{id}")
+    public Recipe getWithProducts(@PathVariable int id) {
+        return super.getWithProducts(id);
+    }
+
+
+    @Override
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
@@ -39,7 +48,8 @@ public class RecipeUIController extends AbstractRecipeController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void createOrUpdate(@Validated(View.Web.class) Recipe recipe) {
+    public void createOrUpdate(@Validated(View.Web.class)
+                                   @RequestBody Recipe recipe) {
         if (recipe.isNew()) {
             super.create(recipe);
         } else {
@@ -50,8 +60,8 @@ public class RecipeUIController extends AbstractRecipeController {
     @Override
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecipeTo> getBetween(
-            @RequestParam @Nullable Date startDate,
-            @RequestParam @Nullable Date endDate) {
+            @RequestParam @Nullable @DateTimeFormat(pattern = DateTimeUtil.DATE_PATTERN) Date startDate,
+            @RequestParam @Nullable @DateTimeFormat(pattern = DateTimeUtil.DATE_PATTERN) Date endDate) {
         return super.getBetween(startDate, endDate);
     }
 }

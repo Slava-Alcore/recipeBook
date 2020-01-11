@@ -25,14 +25,6 @@
                             <label for="endDate"><spring:message code="recipe.endDate"/></label>
                             <input class="form-control" name="endDate" id="endDate" autocomplete="off">
                         </div>
-                        <div class="offset-2 col-2">
-                            <label for="startTime"><spring:message code="recipe.startTime"/></label>
-                            <input class="form-control" name="startTime" id="startTime" autocomplete="off">
-                        </div>
-                        <div class="col-2">
-                            <label for="endTime"><spring:message code="recipe.endTime"/></label>
-                            <input class="form-control" name="endTime" id="endTime" autocomplete="off">
-                        </div>
                     </div>
                 </form>
             </div>
@@ -55,9 +47,10 @@
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
-                <th><spring:message code="recipe.dateTime"/></th>
+                <th><spring:message code="recipe.date"/></th>
                 <th><spring:message code="recipe.description"/></th>
                 <th><spring:message code="recipe.servings"/></th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -78,7 +71,7 @@
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label <%--for="productList" --%>class="col-form-label"><spring:message
+                        <label for="dynamicTable" class="col-form-label"><spring:message
                                 code="recipe.productList"/></label>
                         <%--<input type="text" class="form-control" id="productList" name="productList"
                                placeholder="<spring:message code="recipe.description"/>">--%>
@@ -124,17 +117,45 @@
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-2" id="viewRow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="viewTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td style="width:30%" class="col-2">
+                            <ul id="liProducts">
+                            </ul>
+                        </td>
+                        <td style="width:70%" class="col-3">
+                            <ul id="liView">
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeNoty()">
+                    <span class="fa fa-close"></span>
+                    <spring:message code="common.close"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 <jsp:include page="fragments/i18n.jsp">
     <jsp:param name="page" value="recipe"/>
 </jsp:include>
 <script>
-    var s = $('productData').serializeArray();
-
     jQuery('.plus').click(function(){
         jQuery('.information_json_plus').before(
-            '<tr>' +
+            '<tr id="tempData">' +
             '<td><input type="text" class="form-control" id="productData" name="name" placeholder="<spring:message code="recipe.product.name"/>"></td>' +
             '<td><input type="number" class="form-control" id="productData" name="volume" placeholder="<spring:message code="recipe.product.volume"/>"></td>' +
             '<td><input type="text" class="form-control" id="productData" name="volumeMeasure" placeholder="<spring:message code="recipe.product.volumeMeasure"/>"></td>' +

@@ -6,9 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.recipebook.model.Recipe;
 import ru.recipebook.repository.RecipeRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import static ru.recipebook.util.DateTimeUtil.*;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class DataJpaRecipeRepository implements RecipeRepository {
 
     @Override
     public List<Recipe> getBetweenInclusive(Date startDate, Date endDate, int userId) {
-        return crudRecipeRepository.getBetween(getStartInclusive(startDate),getEndExclusive(endDate),userId);
+        return crudRecipeRepository.getBetween(startDate,endDate,userId);
     }
 
     @Override

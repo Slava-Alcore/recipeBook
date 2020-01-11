@@ -1,5 +1,6 @@
 package ru.recipebook.to;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.recipebook.model.Product;
 
 import java.beans.ConstructorProperties;
@@ -10,13 +11,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class RecipeTo extends BaseTo {
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     private String description;
 
     private Integer servings;
 
-    @ConstructorProperties({"id", "dateTime", "description", "servings"})
+    @ConstructorProperties({"id", "date", "description", "servings"})
     public RecipeTo(Integer id, Date date, String description, Integer servings) {
         super(id);
         this.date = date;
@@ -42,9 +45,8 @@ public class RecipeTo extends BaseTo {
 
     @Override
     public String toString() {
-        return "MealTo{" +
+        return "RecipeTo{" +
                 "id=" + id +
-                ", dateTime=" + date +
                 ", description='" + description + '\'' +
                 ", calories=" + servings +
                 '}';

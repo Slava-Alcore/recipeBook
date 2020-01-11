@@ -12,7 +12,7 @@
 
     <security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 
-    <mvc:annotation-driven conversion-service="conversionService">
+    <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper" ref="objectMapper"/>
@@ -24,15 +24,6 @@
             <bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver "/>
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
-
-    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="conversionService">
-        <property name="formatters">
-            <set>
-                <bean class="ru.recipebook.web.converter.DateTimeFormatters.LocalTimeFormatter"/>
-                <bean class="ru.recipebook.web.converter.DateTimeFormatters.LocalDateFormatter"/>
-            </set>
-        </property>
-    </bean>
 
     <context:component-scan base-package="ru.recipebook.**.web"/>
 

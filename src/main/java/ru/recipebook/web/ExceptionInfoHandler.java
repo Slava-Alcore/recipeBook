@@ -24,8 +24,10 @@ import ru.recipebook.util.exception.ErrorType;
 import ru.recipebook.util.exception.IllegalRequestDataException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.Optional;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static ru.recipebook.util.exception.ErrorType.*;
 
@@ -77,6 +79,15 @@ public class ExceptionInfoHandler {
                 .toArray(String[]::new);
 
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorInfo constraintDataError(HttpServletRequest req, ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        Object[] details = constraintViolations.stream()
+                .map(constraintViolation -> String.format("Product %s %s", constraintViolation.getPropertyPath(), constraintViolation.getMessage())).toArray();
+        return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR,Arrays.copyOf(details,details.length,String[].class));
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422

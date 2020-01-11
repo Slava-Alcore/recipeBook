@@ -22,9 +22,9 @@ public class ProductTestData {
     public static final List<Product> USER_PRODUCTS = List.of(PRODUCT1, PRODUCT2, PRODUCT3, PRODUCT4, PRODUCT5, PRODUCT6);
     public static final List<Product> ADMIN_PRODUCTS = List.of(ADMIN_PRODUCT1, ADMIN_PRODUCT2, ADMIN_PRODUCT3);
 
-    public static final Product NEW_PRODUCT1 = new Product(PRODUCT1_ID +9,"Мясо",0.5,"кг");
-    public static final Product NEW_PRODUCT2 = new Product(PRODUCT1_ID +10,"Лук",300.0,"г");
-    public static final Product NEW_PRODUCT3 = new Product(PRODUCT1_ID +11,"Морковь",0.2,"кг");
+    public static final Product NEW_PRODUCT1 = new Product(null,"Мясо",0.5,"кг");
+    public static final Product NEW_PRODUCT2 = new Product(null,"Лук",300.0,"г");
+    public static final Product NEW_PRODUCT3 = new Product(null,"Морковь",0.2,"кг");
 
     public static final List<Product> NEW_PRODUCTS = List.of(NEW_PRODUCT1,NEW_PRODUCT2,NEW_PRODUCT3);
 }

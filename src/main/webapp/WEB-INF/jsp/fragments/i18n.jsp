@@ -7,6 +7,7 @@
     <%-- user.add / user.edit ir meal.add/meal.edit --%>
     i18n["addTitle"] = '<spring:message code="${param.page}.add"/>';
     i18n["editTitle"] = '<spring:message code="${param.page}.edit"/>';
+    i18n["viewTitle"] = '<spring:message code="${param.page}.view"/>';
 
     <c:forEach var='key' items='<%=new String[]{"common.deleted", "common.saved", "common.enabled", "common.disabled", "common.search", "common.confirm"}%>'>
     i18n['${key}'] = '<spring:message code="${key}"/>';

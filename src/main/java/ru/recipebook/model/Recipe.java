@@ -27,7 +27,7 @@ public class Recipe extends AbstractIdEntity {
     @Column(name = "date", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date date;
+    private Date date = new Date();;
 
     @Column(name = "description", nullable = false)
     @NotBlank
@@ -39,7 +39,7 @@ public class Recipe extends AbstractIdEntity {
     @Range(max = 16)
     private Integer servings;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade=CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade=CascadeType.ALL,orphanRemoval = true)
     @OrderBy("name")
     @NotEmpty
     @JsonManagedReference

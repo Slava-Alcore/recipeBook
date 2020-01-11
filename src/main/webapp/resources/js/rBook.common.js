@@ -23,27 +23,30 @@ function makeEditable(ctx) {
         failNoty(jqXHR);
     });
 
-    // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
     $.ajaxSetup({cache: false});
-
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function (e, xhr, options) {
-        xhr.setRequestHeader(header, token);
-    });
 }
 
 function add() {
     $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
+    form.find("tr[id=tempData]").remove();
     $("#editRow").modal();
 }
 
 function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
-    $.get(context.ajaxUrl + id, function (data) {
+    form.find("tr[id=tempData]").remove();
+    $.get(context.ajaxUrl + "withprod/" + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
+            if (key==="productList"){
+                for (var i=0;i<value.length;i++){
+                    jQuery('.plus').trigger("click");
+                    form.find('tr[id=tempData]').last().find("input[name=name]").val(value[i].name);
+                    form.find('tr[id=tempData]').last().find("input[name=volume]").val(value[i].volume);
+                    form.find('tr[id=tempData]').last().find("input[name=volumeMeasure]").val(value[i].volumeMeasure);
+                }
+            }
         });
         $('#editRow').modal();
     });
@@ -66,12 +69,15 @@ function updateTableByData(data) {
 }
 
 function save() {
+    serializeRecipeFormData(form);
     closeNoty();
     $.ajax({
         type: "POST",
         url: context.ajaxUrl,
-        data: serializeFormData(form)
-    }).done(function () {
+        data: JSON.stringify(serializeRecipeFormData(form)),
+        dataType: "json",
+        contentType: "application/json"
+    }).done(function (result) {
         $("#editRow").modal("hide");
         context.updateTable();
         successNoty("common.saved");
@@ -80,23 +86,29 @@ function save() {
 
 var failedNote;
 
-function serializeFormData(form) {
+function serializeRecipeFormData(form) {
+    var ajaxData={};
+    ajaxData.id = $('input[name=id]').val();
+    ajaxData.description = $('input[name=description]').val();
+    ajaxData.servings = $('input[name=servings]').val();
+    ajaxData.productList = serializeProducts(form);
+    return ajaxData;
+}
+
+function serializeProducts(form) {
     var productArray = form.find('input[id=productData]').serializeArray();
-    var resultArray = $.makeArray();
+    var resultArray = [];
     var currentObject = {};
     for (let i = 0; i<productArray.length; i++){
         if (productArray[i]['name']==="name"){
             currentObject={};
             currentObject[productArray[i]['name']]=productArray[i]['value'];
-        } else {
+        } else /*if (productArray[i]['name']==="description" || productArray[i]['name']==="volumeMeasure" || productArray[i]['name']==="volume") */{
             currentObject[productArray[i]['name']]=productArray[i]['value'];
             if (productArray[i]['name']==="volumeMeasure") resultArray.push(currentObject);
         }
     }
-    return $('input[name=id]').serialize()+'&'
-        +$('input[name=description]').serialize()+'&'
-        +$('input[name=servings]').serialize()+'&'
-        +'productList='+JSON.stringify(resultArray).replace(/\"/g, '');
+    return  resultArray;
 }
 
 function closeNoty() {
@@ -124,6 +136,33 @@ function failNoty(jqXHR) {
         type: "error",
         layout: "bottomRight"
     }).show();
+}
+
+function viewRow(id) {
+    $("#viewTitle").html(i18n["viewTitle"]);
+    $('li#recipeData').remove();
+    $.get(context.ajaxUrl+ "withprod/" + id, function (data) {
+        $.each(data, function (key, value) {
+            if (key==="productList"){
+                for (var i=0; i< value.length;i++){
+                    var list = $('ul#liProducts');
+                    var li = $('<li id="recipeData"/>').appendTo(list);
+                    li.text(value[i].name+' '+value[i].volume+value[i].volumeMeasure)
+                }
+            } else {
+                var list = $('ul#liView');
+                var li = $('<li id="recipeData"/>').appendTo(list);
+                li.text(value);
+            }
+        });
+        $('#viewRow').modal();
+    });
+}
+
+function renderViewBtn(data, type, row) {
+    if (type === "display") {
+        return "<a onclick='viewRow(" + row.id + ");'><span class='fa fa-file-text'></span></a>";
+    }
 }
 
 function renderEditBtn(data, type, row) {
