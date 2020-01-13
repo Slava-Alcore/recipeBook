@@ -16,9 +16,9 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_USER', 100001);
 
 INSERT INTO recipes (date, description, servings, user_id)
-VALUES ('2019-03-29 01:00', 'Завтрак', 4, 100000),
-       ('2019-03-30 01:00', 'Обед', 3, 100000),
-       ('2019-03-31 01:00', 'Админ ужин', 4, 100001);
+VALUES ('2019-03-29', 'Завтрак', 4, 100000),
+       ('2019-03-30', 'Обед', 3, 100000),
+       ('2019-03-31', 'Админ ужин', 4, 100001);
 
 
 INSERT INTO products (name, volumeMeasure, volume, recipe_id)

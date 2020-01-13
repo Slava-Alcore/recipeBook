@@ -31,19 +31,23 @@ public class RecipeTestData {
     public static final List<Recipe> RECIPES = List.of(RECIPE2, RECIPE1);
 
     public static Recipe getNew() {
-        return new Recipe(null,  "Большой Ужин", 3,NEW_PRODUCTS);
+        Recipe newRecipe = new Recipe(null,  "Большой Ужин", 3,NEW_PRODUCTS);
+        for (Product p : newRecipe.getProductList()){
+            p.setRecipe(newRecipe);
+        }
+        return newRecipe;
     }
 
     public static Recipe getUpdated() {
         PRODUCT1.setRecipe(RECIPE1);
         PRODUCT2.setRecipe(RECIPE1);
         PRODUCT3.setRecipe(RECIPE1);
-        Recipe updated = new Recipe(RECIPE1_ID,"Обновленный завтрак", 5,List.of(PRODUCT1,PRODUCT2,PRODUCT3));
+        Recipe updated = new Recipe(RECIPE1_ID,"Обновленный завтрак", 5,List.of(PRODUCT1));
         updated.setDate(RECIPE1.getDate());
         return updated;
     }
 
     public static TestMatchers<Recipe> RECIPE_MATCHERS = TestMatchers.useFieldsComparator(Recipe.class, "user","productList","date");
     public static TestMatchers<RecipeTo> RECIPE_TO_MATCHERS = TestMatchers.useEquals(RecipeTo.class);
-    public static TestMatchers<Product> PRODUCT_MATCHERS = TestMatchers.useEquals(Product.class);
+    public static TestMatchers<Product> PRODUCT_MATCHERS = TestMatchers.useFieldsComparator(Product.class,"recipe");
 }

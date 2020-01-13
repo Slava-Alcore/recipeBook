@@ -39,7 +39,7 @@ public class Recipe extends AbstractIdEntity {
     @Range(max = 16)
     private Integer servings;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade=CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade=CascadeType.PERSIST,orphanRemoval = true)
     @OrderBy("name")
     @NotEmpty
     @JsonManagedReference

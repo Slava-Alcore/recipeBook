@@ -16,7 +16,7 @@ import static ru.recipebook.Profiles.HEROKU;
 import static ru.recipebook.UserTestData.*;
 import static ru.recipebook.util.exception.ModificationRestrictionException.EXCEPTION_MODIFICATION_RESTRICTION;
 
-@ActiveProfiles({HEROKU})
+@ActiveProfiles(HEROKU)
 class HerokuRestControllerTest extends AbstractControllerTest {
 
     public HerokuRestControllerTest() {

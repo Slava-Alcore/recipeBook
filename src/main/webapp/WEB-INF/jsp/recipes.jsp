@@ -156,6 +156,7 @@
     jQuery('.plus').click(function(){
         jQuery('.information_json_plus').before(
             '<tr id="tempData">' +
+            '<input type="hidden" id="productData" name="id">'   +
             '<td><input type="text" class="form-control" id="productData" name="name" placeholder="<spring:message code="recipe.product.name"/>"></td>' +
             '<td><input type="number" class="form-control" id="productData" name="volume" placeholder="<spring:message code="recipe.product.volume"/>"></td>' +
             '<td><input type="text" class="form-control" id="productData" name="volumeMeasure" placeholder="<spring:message code="recipe.product.volumeMeasure"/>"></td>' +

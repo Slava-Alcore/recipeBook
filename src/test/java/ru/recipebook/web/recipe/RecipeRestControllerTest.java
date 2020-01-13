@@ -89,18 +89,6 @@ class RecipeRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void createWithLocation() throws Exception {
-        Recipe newRecipe = RecipeTestData.getNew();
-        ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
-        action.andDo(print());
-        Recipe created = readFromJson(action, Recipe.class);
-        Integer newId = created.getId();
-        newRecipe.setId(newId);
-        RECIPE_MATCHERS.assertMatch(created, newRecipe);
-        RECIPE_MATCHERS.assertMatch(recipeService.get(newId, USER_ID), newRecipe);
-    }
-
-    @Test
     void getAll() throws Exception {
         perform(doGet().basicAuth(USER))
                 .andExpect(status().isOk())
@@ -158,7 +146,6 @@ class RecipeRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithProducts() throws Exception {
         Recipe newRecipe = RecipeTestData.getNew();
-        newRecipe.setProductList(NEW_PRODUCTS);
         ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
         action.andDo(print());
         Recipe created = readFromJson(action, Recipe.class);
@@ -168,8 +155,7 @@ class RecipeRestControllerTest extends AbstractControllerTest {
         }
         newRecipe.setId(created.getId());
         RECIPE_MATCHERS.assertMatch(recipeService.get(newId, USER_ID), newRecipe);
-        List<Product> products = new ArrayList<>(recipeService.get(newId, USER_ID).getProductList());
-        PRODUCT_MATCHERS.assertMatch(products, newRecipe.getProductList());
+        PRODUCT_MATCHERS.assertMatch(recipeService.get(newId, USER_ID).getProductList(), newRecipe.getProductList());
     }
 
     @Test
