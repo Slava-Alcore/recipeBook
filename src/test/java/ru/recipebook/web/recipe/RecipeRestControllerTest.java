@@ -146,6 +146,9 @@ class RecipeRestControllerTest extends AbstractControllerTest {
     @Test
     void createWithProducts() throws Exception {
         Recipe newRecipe = RecipeTestData.getNew();
+        for (int i=0;i<newRecipe.getProductList().size();i++){
+            newRecipe.getProductList().get(i).setId(null);
+        }
         ResultActions action = perform(doPost().jsonBody(newRecipe).basicAuth(USER));
         action.andDo(print());
         Recipe created = readFromJson(action, Recipe.class);
